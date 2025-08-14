@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Data;
 using WeatherAlertAPI.Configuration;
@@ -21,11 +22,20 @@ namespace WeatherAlertAPI.Tests
         }        public static Mock<IDbConnection> GetMockConnection(Mock<IDatabaseConnection> dbMock)
         {
             return Mock.Get(dbMock.Object.CreateConnection());
-        }public static DatabaseConnection CreateRealDatabase()
+        }        public static DatabaseConnection CreateRealDatabase()
         {
+            // Carregar configurações do arquivo local para testes
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false)
+                .AddJsonFile("appsettings.Local.json", optional: true)
+                .Build();
+            
+            var connectionString = configuration.GetSection("Database:ConnectionString").Value;
+            
             var settings = Options.Create(new DatabaseSettings 
             { 
-                ConnectionString = "User Id=rm557883;Password=031204;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle.fiap.com.br)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCL)))" 
+                ConnectionString = connectionString ?? throw new InvalidOperationException("Connection string não encontrada. Verifique se o arquivo appsettings.Local.json existe com as configurações necessárias.")
             });
             var loggerMock = new Mock<Microsoft.Extensions.Logging.ILogger<DatabaseConnection>>();
             return new DatabaseConnection(settings, loggerMock.Object);
