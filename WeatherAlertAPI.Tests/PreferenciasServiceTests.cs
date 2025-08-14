@@ -88,6 +88,8 @@ namespace WeatherAlertAPI.Tests
             // Act & Assert
             await _service.UpdatePreferenciaAsync(preferencia);
             // Success is indicated by no exception being thrown
+
+            ConnectionMock.Verify(x => x.ExecuteAsync(It.IsAny<CommandDefinition>()), Times.Once);
         }
 
         [Fact]
@@ -99,6 +101,8 @@ namespace WeatherAlertAPI.Tests
             // Act & Assert
             await _service.DeletePreferenciaAsync(1);
             // Success is indicated by no exception being thrown
+
+            ConnectionMock.Verify(x => x.ExecuteAsync(It.IsAny<CommandDefinition>()), Times.Once);
         }
 
         [Fact]
