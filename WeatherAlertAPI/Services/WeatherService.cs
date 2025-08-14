@@ -29,6 +29,8 @@ namespace WeatherAlertAPI.Services
 
         public async Task<(decimal temperatura, string cidade, string estado)> GetCurrentTemperatureAsync(string cidade, string estado)
         {
+            _logger.LogInformation("Obtendo temperatura para {Cidade}, {Estado}", cidade, estado);
+            
             var location = $"{cidade},{estado}";
             var url = $"{_settings.BaseUrl}/current.json?key={_settings.ApiKey}&q={location}";
             
@@ -45,11 +47,13 @@ namespace WeatherAlertAPI.Services
 
             var temperatura = tempToken.Value<decimal>();
             
+            _logger.LogInformation("Temperatura obtida: {Temperatura}°C", temperatura);
             return (temperatura, cidade, estado);
         }
 
         public async Task CheckAndCreateAlertsAsync()
         {
+            _logger.LogInformation("Iniciando verificação de alertas");
             var preferencias = await _preferenciasService.GetPreferenciasAsync();
             
             foreach (var pref in preferencias)
@@ -60,6 +64,7 @@ namespace WeatherAlertAPI.Services
 
                 if (pref.TemperaturaMax.HasValue && temperatura > pref.TemperaturaMax.Value)
                 {
+                    _logger.LogWarning("Alerta de temperatura alta: {Temperatura}°C em {Cidade}", temperatura, cidade);
                     await _alertaService.CreateAlertaAsync(new Models.AlertaTemperatura
                     {
                         Cidade = cidade,
@@ -73,6 +78,7 @@ namespace WeatherAlertAPI.Services
                 }
                 else if (pref.TemperaturaMin.HasValue && temperatura < pref.TemperaturaMin.Value)
                 {
+                    _logger.LogWarning("Alerta de temperatura baixa: {Temperatura}°C em {Cidade}", temperatura, cidade);
                     await _alertaService.CreateAlertaAsync(new Models.AlertaTemperatura
                     {
                         Cidade = cidade,
