@@ -81,6 +81,8 @@ namespace WeatherAlertAPI.Tests
             // Act & Assert
             await _service.UpdateAlertaStatusAsync(1, "INATIVO");
             // Success is indicated by no exception being thrown
+
+            ConnectionMock.Verify(x => x.ExecuteAsync(It.IsAny<CommandDefinition>()), Times.Once);
         }
 
         [Fact]
