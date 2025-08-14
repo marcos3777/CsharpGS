@@ -24,7 +24,6 @@ namespace WeatherAlertAPI.Tests
             return Mock.Get(dbMock.Object.CreateConnection());
         }        public static DatabaseConnection CreateRealDatabase()
         {
-            // Carregar configurações do arquivo local para testes
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false)

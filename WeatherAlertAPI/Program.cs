@@ -14,7 +14,7 @@ using WeatherAlertAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicionar configuração local para credenciais sensíveis
+
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddProblemDetails();
