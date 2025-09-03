@@ -25,7 +25,7 @@ namespace WeatherAlertAPI.Services
             string? instance = null)
         {
             var errorResponse = new ErrorResponse(
-                code: type?.Split('/').Last() ?? "ERROR",
+                code: type?.Split('/').Length > 0 ? type.Split('/')[^1] : "ERROR",
                 message: detail ?? title ?? "An error occurred"
             );
 
@@ -57,13 +57,6 @@ namespace WeatherAlertAPI.Services
             string? detail = null,
             string? instance = null)
         {
-            var errors = modelStateDictionary
-                .Where(e => e.Value?.Errors.Count > 0)
-                .ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray() ?? Array.Empty<string>()
-                );
-
             var errorResponse = new ErrorResponse(
                 code: "VALIDATION_ERROR",
                 message: "One or more validation errors occurred"

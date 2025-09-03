@@ -189,10 +189,10 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-var app = builder.Build();
-
 // Get configured URLs for use in setup
-var externalUrls = app.Services.GetRequiredService<IOptions<ExternalUrlsSettings>>().Value;
+var externalUrls = builder.Configuration.GetSection("ExternalUrls").Get<ExternalUrlsSettings>();
+
+var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
