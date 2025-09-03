@@ -116,7 +116,7 @@ namespace WeatherAlertAPI.Tests
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnedPrefs = Assert.IsAssignableFrom<IEnumerable<PreferenciasNotificacao>>(okResult.Value);
+            var returnedPrefs = Assert.IsType<IEnumerable<PreferenciasNotificacao>>(okResult.Value, false);
             Assert.Single(returnedPrefs);
             Assert.Equal("São Paulo", returnedPrefs.First().Cidade);
         }
@@ -235,7 +235,7 @@ namespace WeatherAlertAPI.Tests
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var model = Assert.IsAssignableFrom<IEnumerable<AlertaTemperatura>>(okResult.Value);
+            var model = Assert.IsType<IEnumerable<AlertaTemperatura>>(okResult.Value, false);
             Assert.NotEmpty(model);
         }
 
