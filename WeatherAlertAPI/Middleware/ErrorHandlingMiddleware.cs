@@ -22,13 +22,13 @@ namespace WeatherAlertAPI.Middleware
             {
                 await _next(context);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await HandleExceptionAsync(context, ex);
+                await HandleExceptionAsync(context);
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private static async Task HandleExceptionAsync(HttpContext context)
         {
             var error = new ErrorResponse(
                 code: "INTERNAL_SERVER_ERROR",
