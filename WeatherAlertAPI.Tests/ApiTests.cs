@@ -53,7 +53,7 @@ namespace WeatherAlertAPI.Tests
             Assert.Equal("SP", model.Estado);
             Assert.Equal(15, model.TemperaturaMin);
             Assert.Equal(30, model.TemperaturaMax);
-            Assert.True(model.Ativo);
+            Assert.True(model.Ativo == true);
         }
 
         [Fact]

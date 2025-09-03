@@ -69,11 +69,11 @@
                                     <td>@Html.DisplayFor(modelItem => item.TemperaturaMin)°C</td>
                                     <td>@Html.DisplayFor(modelItem => item.TemperaturaMax)°C</td>
                                     <td>
-                                        <span class="badge @(item.Ativo ? "bg-success" : "bg-danger")">
-                                            @(item.Ativo ? "Ativo" : "Inativo")
+                                        <span class="badge @(item.Ativo == true ? "bg-success" : "bg-danger")">
+                                            @(item.Ativo == true ? "Ativo" : "Inativo")
                                         </span>
                                     </td>
-                                    <td>@item.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@(item.DataCriacao?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")</td>
                                     <td>
                                         <div class="btn-group">
                                             <a asp-page="./Edit" asp-route-id="@item.IdPreferencia" class="btn btn-sm btn-primary">Editar</a>

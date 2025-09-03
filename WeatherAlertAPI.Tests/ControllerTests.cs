@@ -53,7 +53,7 @@ namespace WeatherAlertAPI.Tests
             Assert.Equal("SP", response.Data.Estado);
             Assert.Equal(15, response.Data.TemperaturaMin);
             Assert.Equal(30, response.Data.TemperaturaMax);
-            Assert.True(response.Data.Ativo);
+            Assert.True(response.Data.Ativo == true);
             
             // Verifica os links HATEOAS
             Assert.Contains(response.Links, link => link.Key == "self");

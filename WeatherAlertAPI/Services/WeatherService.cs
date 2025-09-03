@@ -58,7 +58,7 @@ namespace WeatherAlertAPI.Services
             
             foreach (var pref in preferencias)
             {
-                if (!pref.Ativo) continue;
+                if (pref.Ativo != true) continue;
 
                 var (temperatura, cidade, estado) = await GetCurrentTemperatureAsync(pref.Cidade, pref.Estado);
 

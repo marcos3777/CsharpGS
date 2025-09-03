@@ -40,7 +40,7 @@ namespace WeatherAlertAPI.Services
                 parameters.Add("p_estado", preferencia.Estado);
                 parameters.Add("p_temperatura_min", preferencia.TemperaturaMin);
                 parameters.Add("p_temperatura_max", preferencia.TemperaturaMax);
-                parameters.Add("p_ativo", preferencia.Ativo ? 1 : 0);
+                parameters.Add("p_ativo", preferencia.Ativo == true ? 1 : 0);
                 parameters.Add("p_id_preferencia", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 using var conn = _db.CreateConnection();
@@ -143,7 +143,7 @@ namespace WeatherAlertAPI.Services
                 parameters.Add("p_estado", preferencia.Estado);
                 parameters.Add("p_temperatura_min", preferencia.TemperaturaMin);
                 parameters.Add("p_temperatura_max", preferencia.TemperaturaMax);
-                parameters.Add("p_ativo", preferencia.Ativo ? 1 : 0);
+                parameters.Add("p_ativo", preferencia.Ativo == true ? 1 : 0);
 
                 using var conn = _db.CreateConnection();
                 await conn.ExecuteAsync(
