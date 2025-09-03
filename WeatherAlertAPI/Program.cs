@@ -62,6 +62,9 @@ builder.Services.AddScoped<ICacheService, CacheService>();
 
 builder.Services.AddEndpointsApiExplorer();
 
+// Get configured URLs for use in setup
+var externalUrls = builder.Configuration.GetSection("ExternalUrls").Get<ExternalUrlsSettings>();
+
 builder.Services.AddSwaggerGen(options =>
 {    options.SwaggerDoc("v1", new OpenApiInfo
     {
@@ -188,9 +191,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
-
-// Get configured URLs for use in setup
-var externalUrls = builder.Configuration.GetSection("ExternalUrls").Get<ExternalUrlsSettings>();
 
 var app = builder.Build();
 
