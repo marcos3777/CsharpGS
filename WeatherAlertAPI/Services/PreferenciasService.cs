@@ -59,8 +59,9 @@ namespace WeatherAlertAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao criar preferência");
-                throw;
+                _logger.LogError(ex, "Erro ao criar preferência para cidade: {Cidade}, estado: {Estado}", 
+                    preferencia.Cidade, preferencia.Estado);
+                throw new InvalidOperationException($"Falha ao criar preferência para {preferencia.Cidade}, {preferencia.Estado}", ex);
             }
         }
 

@@ -12,7 +12,7 @@ namespace WeatherAlertAPI.Models
         /// The main data of the response
         /// </summary>
         [JsonPropertyName("data")]
-        public T Data { get; set; }
+        public required T Data { get; set; }
 
         /// <summary>
         /// Collection of hypermedia links for resource navigation

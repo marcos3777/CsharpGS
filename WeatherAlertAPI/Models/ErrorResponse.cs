@@ -39,12 +39,12 @@ namespace WeatherAlertAPI.Models
         /// A unique code identifying the error.
         /// </summary>
         [JsonPropertyName("code")]
-        public string Code { get; set; }
+        public required string Code { get; set; }
 
         /// <summary>
         /// A human-readable message describing the error.
         /// </summary>
         [JsonPropertyName("message")]
-        public string Message { get; set; }
+        public required string Message { get; set; }
     }
 }

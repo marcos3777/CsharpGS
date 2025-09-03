@@ -17,6 +17,7 @@ namespace WeatherAlertAPI.Tests
         private readonly Mock<IWeatherService> _mockWeatherService;
         private readonly PreferenciasController _preferenciasController;
         private readonly AlertaController _alertaController;
+        private readonly WeatherCheckController _weatherCheckController;
 
         public ControllerTests()
         {
@@ -24,7 +25,8 @@ namespace WeatherAlertAPI.Tests
             _mockAlertaService = new Mock<IAlertaService>();
             _mockWeatherService = new Mock<IWeatherService>();
             _preferenciasController = new PreferenciasController(_mockPreferenciasService.Object);
-            _alertaController = new AlertaController(_mockAlertaService.Object, _mockWeatherService.Object);
+            _alertaController = new AlertaController(_mockAlertaService.Object);
+            _weatherCheckController = new WeatherCheckController(_mockWeatherService.Object);
         }
 
         [Fact]
@@ -198,10 +200,10 @@ namespace WeatherAlertAPI.Tests
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _alertaController.CheckTemperatures();
+            var result = await _weatherCheckController.CheckTemperatures();
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<OkObjectResult>(result);
         }
     }
 }

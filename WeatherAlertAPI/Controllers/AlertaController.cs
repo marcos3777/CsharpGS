@@ -33,12 +33,10 @@ namespace WeatherAlertAPI.Controllers
     public class AlertaController : ControllerBase
     {
         private readonly IAlertaService _alertaService;
-        private readonly IWeatherService _weatherService;
 
-        public AlertaController(IAlertaService alertaService, IWeatherService weatherService)
+        public AlertaController(IAlertaService alertaService)
         {
             _alertaService = alertaService;
-            _weatherService = weatherService;
         }        /// <summary>
         /// Lista todos os alertas de temperatura
         /// </summary>
@@ -91,15 +89,15 @@ namespace WeatherAlertAPI.Controllers
         ///   ],
         ///   "_links": {
         ///     "self": {
-        ///       "href": "/api/Alerta?cidade=São%20Paulo&estado=SP",
+        ///       "href": "/api/Alerta?cidade=São%20Paulo&amp;estado=SP",
         ///       "method": "GET"
         ///     },
         ///     "check": {
-        ///       "href": "/api/Alerta/check",
+        ///       "href": "/api/weather/check",
         ///       "method": "POST"
         ///     },
         ///     "preferences": {
-        ///       "href": "/api/Preferencias?cidade=São%20Paulo&estado=SP",
+        ///       "href": "/api/Preferencias?cidade=São%20Paulo&amp;estado=SP",
         ///       "method": "GET"
         ///     },
         ///     "alerta_1": {
@@ -134,7 +132,7 @@ namespace WeatherAlertAPI.Controllers
                 Links = new Dictionary<string, Link>
                 {
                     { "self", new Link($"/api/Alerta?cidade={cidade}&estado={estado}") },
-                    { "check", new Link("/api/Alerta/check", "POST") },
+                    { "check", new Link("/api/weather/check", "POST") },
                     { "preferences", new Link($"/api/Preferencias?cidade={cidade}&estado={estado}") }
                 }
             };
@@ -234,35 +232,6 @@ namespace WeatherAlertAPI.Controllers
 
             await _alertaService.UpdateAlertaStatusAsync(id, status);
             return NoContent();
-        }        /// <summary>
-        /// Verifica as temperaturas atuais e cria alertas se necessário
-        /// </summary>
-        /// <remarks>
-        /// Este endpoint realiza as seguintes ações:
-        /// 
-        /// 1. Consulta a temperatura atual de todas as cidades monitoradas
-        /// 2. Compara com as preferências de notificação existentes
-        /// 3. Cria alertas automaticamente quando necessário
-        /// 
-        /// Exemplo de requisição:
-        /// ```http
-        /// POST /api/Alerta/check
-        /// ```
-        /// 
-        /// Possíveis resultados:
-        /// - Alertas de temperatura alta
-        /// - Alertas de temperatura baixa
-        /// - Nenhum alerta (temperaturas normais)
-        /// </remarks>
-        /// <response code="200">Verificação realizada com sucesso</response>
-        /// <response code="500">Erro ao acessar o serviço de previsão do tempo</response>
-        [HttpPost("check")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CheckTemperatures()
-        {
-            await _weatherService.CheckAndCreateAlertsAsync();
-            return Ok();
         }
     }
 }

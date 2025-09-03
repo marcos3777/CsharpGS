@@ -51,8 +51,9 @@ namespace WeatherAlertAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao criar alerta de temperatura");
-                throw;
+                _logger.LogError(ex, "Erro ao criar alerta de temperatura para cidade: {Cidade}, estado: {Estado}", 
+                    alerta.Cidade, alerta.Estado);
+                throw new InvalidOperationException($"Falha ao criar alerta para {alerta.Cidade}, {alerta.Estado}", ex);
             }
         }
 
@@ -107,8 +108,8 @@ namespace WeatherAlertAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao buscar alerta por ID");
-                throw;
+                _logger.LogError(ex, "Erro ao buscar alerta por ID: {AlertaId}", id);
+                throw new InvalidOperationException($"Falha ao buscar alerta com ID {id}", ex);
             }
         }
 
