@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using WeatherAlertAPI.Models;
+using WeatherAlertAPI.Constants;
 
 namespace WeatherAlertAPI.Services
 {
@@ -41,7 +42,7 @@ namespace WeatherAlertAPI.Services
                 parameters.Add("p_temperatura_min", preferencia.TemperaturaMin);
                 parameters.Add("p_temperatura_max", preferencia.TemperaturaMax);
                 parameters.Add("p_ativo", preferencia.Ativo == true ? 1 : 0);
-                parameters.Add("p_id_preferencia", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add(StoredProcedureParams.P_ID_PREFERENCIA, dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 using var conn = _db.CreateConnection();
                 await conn.ExecuteAsync(
@@ -50,7 +51,7 @@ namespace WeatherAlertAPI.Services
                     commandType: CommandType.StoredProcedure
                 );
 
-                preferencia.IdPreferencia = parameters.Get<int>("p_id_preferencia");
+                preferencia.IdPreferencia = parameters.Get<int>(StoredProcedureParams.P_ID_PREFERENCIA);
                 preferencia.DataCriacao = DateTime.Now;
                 preferencia.DataAtualizacao = DateTime.Now;
 
@@ -98,7 +99,7 @@ namespace WeatherAlertAPI.Services
                     throw new ArgumentException("ID deve ser maior que zero", nameof(id));
 
                 var parameters = new DynamicParameters();
-                parameters.Add("p_id_preferencia", id);
+                parameters.Add(StoredProcedureParams.P_ID_PREFERENCIA, id);
                 parameters.Add("p_preferencia", dbType: DbType.Object, direction: ParameterDirection.Output);
 
                 using var conn = _db.CreateConnection();
@@ -171,7 +172,7 @@ namespace WeatherAlertAPI.Services
                     throw new ArgumentException("ID deve ser maior que zero", nameof(id));
 
                 var parameters = new DynamicParameters();
-                parameters.Add("p_id_preferencia", id);
+                parameters.Add(StoredProcedureParams.P_ID_PREFERENCIA, id);
 
                 using var conn = _db.CreateConnection();
                 await conn.ExecuteAsync(

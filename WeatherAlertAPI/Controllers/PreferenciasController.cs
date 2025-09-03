@@ -5,6 +5,7 @@ using WeatherAlertAPI.Models;
 using WeatherAlertAPI.Services;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Http;
+using WeatherAlertAPI.Constants;
 
 namespace WeatherAlertAPI.Controllers
 {
@@ -71,15 +72,14 @@ namespace WeatherAlertAPI.Controllers
                 Links = new Dictionary<string, Link>
                 {
                     { "self", new Link($"/api/Preferencias?cidade={cidade}&estado={estado}") },
-                    { "create", new Link("/api/Preferencias", "POST") },
+                    { "create", new Link(ApiRoutes.PREFERENCIAS, "POST") },
                     { "alerts", new Link($"/api/Alerta?cidade={cidade}&estado={estado}") }
                 }
             };
 
-            foreach (var pref in preferencias)
-            {
-                response.Links[$"preferencia_{pref.IdPreferencia}"] = new Link($"/api/Preferencias/{pref.IdPreferencia}");
-            }
+            // Add individual preference links using LINQ
+            preferencias.ToList().ForEach(pref => 
+                response.Links[$"preferencia_{pref.IdPreferencia}"] = new Link($"/api/Preferencias/{pref.IdPreferencia}"));
 
             return Ok(response);
         }
@@ -103,7 +103,7 @@ namespace WeatherAlertAPI.Controllers
             {
                 var error = new ErrorResponse("PREFERENCE_NOT_FOUND", "Preferência não encontrada");
                 error.AddLink("documentation", "/docs/errors/PREFERENCE_NOT_FOUND");
-                error.AddLink("all_preferences", "/api/Preferencias");
+                error.AddLink("all_preferences", ApiRoutes.PREFERENCIAS);
                 return NotFound(error);
             }
 
@@ -113,7 +113,7 @@ namespace WeatherAlertAPI.Controllers
                 Links = new Dictionary<string, Link>
                 {
                     { "self", new Link($"/api/Preferencias/{id}") },
-                    { "all", new Link("/api/Preferencias") },
+                    { "all", new Link(ApiRoutes.PREFERENCIAS) },
                     { "update", new Link($"/api/Preferencias/{id}", "PUT") },
                     { "delete", new Link($"/api/Preferencias/{id}", "DELETE") },
                     { "alerts", new Link($"/api/Alerta?cidade={preferencia.Cidade}&estado={preferencia.Estado}") }
@@ -170,7 +170,7 @@ namespace WeatherAlertAPI.Controllers
                         { "self", new Link($"/api/Preferencias/{result.IdPreferencia}") },
                         { "update", new Link($"/api/Preferencias/{result.IdPreferencia}", "PUT") },
                         { "delete", new Link($"/api/Preferencias/{result.IdPreferencia}", "DELETE") },
-                        { "all", new Link("/api/Preferencias") },
+                        { "all", new Link(ApiRoutes.PREFERENCIAS) },
                         { "alerts", new Link($"/api/Alerta?cidade={result.Cidade}&estado={result.Estado}") }
                     }
                 };
@@ -181,7 +181,7 @@ namespace WeatherAlertAPI.Controllers
             {
                 var error = new ErrorResponse("CREATION_ERROR", ex.Message);
                 error.AddLink("documentation", "/docs/errors/CREATION_ERROR");
-                error.AddLink("support", "https://weatheralert.com/support");
+                error.AddLink("support", ExternalUrls.SUPPORT_URL);
                 return BadRequest(error);
             }
         }

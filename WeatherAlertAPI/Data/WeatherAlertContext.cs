@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WeatherAlertAPI.Models;
+using WeatherAlertAPI.Constants;
 
 namespace WeatherAlertAPI.Data
 {
@@ -24,7 +25,7 @@ namespace WeatherAlertAPI.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("ID").HasMaxLength(36);
                 entity.Property(e => e.Nome).HasColumnName("NOME").HasMaxLength(100).IsRequired();
-                entity.Property(e => e.Cidade).HasColumnName("CIDADE").HasMaxLength(100).IsRequired();
+                entity.Property(e => e.Cidade).HasColumnName(DatabaseColumns.CIDADE).HasMaxLength(100).IsRequired();
                 entity.Property(e => e.Idade).HasColumnName("IDADE").IsRequired();
                 entity.Property(e => e.Username).HasColumnName("USERNAME").HasMaxLength(50).IsRequired();
                 entity.Property(e => e.Password).HasColumnName("PASSWORD").HasMaxLength(100).IsRequired();
@@ -46,7 +47,7 @@ namespace WeatherAlertAPI.Data
                 entity.ToTable("DADOS_CHUVA");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("ID").UseIdentityColumn();
-                entity.Property(e => e.Cidade).HasColumnName("CIDADE").HasMaxLength(100).IsRequired();
+                entity.Property(e => e.Cidade).HasColumnName(DatabaseColumns.CIDADE).HasMaxLength(100).IsRequired();
                 entity.Property(e => e.Estado).HasColumnName("ESTADO").HasMaxLength(100).IsRequired();
                 entity.Property(e => e.Data).HasColumnName("DATA").HasMaxLength(15).IsRequired();
                 entity.Property(e => e.TemperaturaMedia).HasColumnName("TEMPERATURA_MEDIA").HasPrecision(5, 2);
@@ -67,7 +68,7 @@ namespace WeatherAlertAPI.Data
                 entity.ToTable("PREFERENCIAS_NOTIFICACAO");
                 entity.HasKey(e => e.IdPreferencia);
                 entity.Property(e => e.IdPreferencia).HasColumnName("ID_PREFERENCIA").UseIdentityColumn();
-                entity.Property(e => e.Cidade).HasColumnName("CIDADE").HasMaxLength(100).IsRequired();
+                entity.Property(e => e.Cidade).HasColumnName(DatabaseColumns.CIDADE).HasMaxLength(100).IsRequired();
                 entity.Property(e => e.Estado).HasColumnName("ESTADO").HasMaxLength(2).IsRequired();
                 entity.Property(e => e.TemperaturaMin).HasColumnName("TEMPERATURA_MIN").HasPrecision(5, 2);
                 entity.Property(e => e.TemperaturaMax).HasColumnName("TEMPERATURA_MAX").HasPrecision(5, 2);
@@ -82,7 +83,7 @@ namespace WeatherAlertAPI.Data
                 entity.ToTable("ALERTAS_TEMPERATURA");
                 entity.HasKey(e => e.IdAlerta);
                 entity.Property(e => e.IdAlerta).HasColumnName("ID_ALERTA").UseIdentityColumn();
-                entity.Property(e => e.Cidade).HasColumnName("CIDADE").HasMaxLength(100).IsRequired();
+                entity.Property(e => e.Cidade).HasColumnName(DatabaseColumns.CIDADE).HasMaxLength(100).IsRequired();
                 entity.Property(e => e.Estado).HasColumnName("ESTADO").HasMaxLength(2).IsRequired();
                 entity.Property(e => e.Temperatura).HasColumnName("TEMPERATURA").HasPrecision(5, 2).IsRequired();
                 entity.Property(e => e.TipoAlerta).HasColumnName("TIPO_ALERTA").HasMaxLength(20).IsRequired();

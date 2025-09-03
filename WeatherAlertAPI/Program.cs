@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using WeatherAlertAPI.Data;
+using WeatherAlertAPI.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,7 @@ builder.Services.AddControllers(options =>
 
         var error = new ErrorResponse("VALIDATION_ERROR", string.Join("; ", errors));
         error.AddLink("documentation", "/docs/errors/VALIDATION_ERROR");
-        error.AddLink("support", "https://weatheralert.com/support");
+        error.AddLink("support", ExternalUrls.SUPPORT_URL);
 
         var result = new BadRequestObjectResult(error);
         result.ContentTypes.Add("application/json");
@@ -96,15 +97,15 @@ builder.Services.AddSwaggerGen(options =>
         Contact = new OpenApiContact
         {
             Name = "Weather Alert Team",
-            Email = "suporte@weatheralert.com",
-            Url = new Uri("https://weatheralert.com/support")
+            Email = ExternalUrls.SUPPORT_EMAIL,
+            Url = new Uri(ExternalUrls.SUPPORT_URL)
         },
         License = new OpenApiLicense
         {
             Name = "MIT License",
-            Url = new Uri("https://opensource.org/licenses/MIT")
+            Url = new Uri(ExternalUrls.MIT_LICENSE_URL)
         },
-        TermsOfService = new Uri("https://weatheralert.com/terms")
+        TermsOfService = new Uri(ExternalUrls.TERMS_URL)
     });
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

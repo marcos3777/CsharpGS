@@ -5,6 +5,7 @@ using WeatherAlertAPI.Models;
 using WeatherAlertAPI.Services;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Http;
+using WeatherAlertAPI.Constants;
 
 namespace WeatherAlertAPI.Controllers
 {    /// <summary>
@@ -137,10 +138,9 @@ namespace WeatherAlertAPI.Controllers
                 }
             };
 
-            foreach (var alerta in alertas)
-            {
-                response.Links[$"alerta_{alerta.IdAlerta}"] = new Link($"/api/Alerta/{alerta.IdAlerta}");
-            }
+            // Add individual alert links using LINQ
+            alertas.ToList().ForEach(alerta => 
+                response.Links[$"alerta_{alerta.IdAlerta}"] = new Link($"/api/Alerta/{alerta.IdAlerta}"));
 
             return Ok(response);
         }
@@ -211,7 +211,7 @@ namespace WeatherAlertAPI.Controllers
             {
                 var error = new ErrorResponse("CREATE_ERROR", ex.Message);
                 error.AddLink("documentation", "/docs/errors/CREATE_ERROR");
-                error.AddLink("support", "https://weatheralert.com/support");
+                error.AddLink("support", ExternalUrls.SUPPORT_URL);
                 return BadRequest(error);
             }
         }

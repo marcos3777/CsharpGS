@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using WeatherAlertAPI.Models;
 using Oracle.ManagedDataAccess.Client;
 using Dapper.Oracle;
+using WeatherAlertAPI.Constants;
 
 namespace WeatherAlertAPI.Services
 {
@@ -33,7 +34,7 @@ namespace WeatherAlertAPI.Services
                 parameters.Add("p_temperatura", alerta.Temperatura);
                 parameters.Add("p_tipo_alerta", alerta.TipoAlerta);
                 parameters.Add("p_mensagem", alerta.Mensagem);
-                parameters.Add("p_id_alerta", dbType: OracleMappingType.Int32, direction: ParameterDirection.Output);
+                parameters.Add(StoredProcedureParams.P_ID_ALERTA, dbType: OracleMappingType.Int32, direction: ParameterDirection.Output);
 
                 using var conn = _db.CreateConnection();
                 await conn.ExecuteAsync(
@@ -42,7 +43,7 @@ namespace WeatherAlertAPI.Services
                     commandType: CommandType.StoredProcedure
                 );
 
-                alerta.IdAlerta = parameters.Get<int>("p_id_alerta");
+                alerta.IdAlerta = parameters.Get<int>(StoredProcedureParams.P_ID_ALERTA);
                 alerta.DataHora = DateTime.Now;
                 alerta.Status = "ATIVO";
 
@@ -89,7 +90,7 @@ namespace WeatherAlertAPI.Services
                 _logger.LogInformation("Buscando alerta por ID: {Id}", id);
 
                 var parameters = new OracleDynamicParameters();
-                parameters.Add("p_id_alerta", id);
+                parameters.Add(StoredProcedureParams.P_ID_ALERTA, id);
                 parameters.Add("p_alerta", null, dbType: OracleMappingType.RefCursor, direction: ParameterDirection.Output);
 
                 using var conn = _db.CreateConnection();
@@ -120,7 +121,7 @@ namespace WeatherAlertAPI.Services
                 _logger.LogInformation("Atualizando status do alerta {Id} para {Status}", id, status);
 
                 var parameters = new DynamicParameters();
-                parameters.Add("p_id_alerta", id);
+                parameters.Add(StoredProcedureParams.P_ID_ALERTA, id);
                 parameters.Add("p_status", status);
 
                 using var conn = _db.CreateConnection();

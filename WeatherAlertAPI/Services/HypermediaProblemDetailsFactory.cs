@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WeatherAlertAPI.Models;
+using WeatherAlertAPI.Constants;
 
 namespace WeatherAlertAPI.Services
 {
@@ -23,7 +24,7 @@ namespace WeatherAlertAPI.Services
             );
 
             errorResponse.AddLink("documentation", $"/docs/errors/{errorResponse.Error.Code}");
-            errorResponse.AddLink("support", "https://weatheralert.com/support");
+            errorResponse.AddLink("support", ExternalUrls.SUPPORT_URL);
 
             if (statusCode == StatusCodes.Status404NotFound)
             {
@@ -63,7 +64,7 @@ namespace WeatherAlertAPI.Services
             );
 
             errorResponse.AddLink("documentation", "/docs/errors/VALIDATION_ERROR");
-            errorResponse.AddLink("support", "https://weatheralert.com/support");
+            errorResponse.AddLink("support", ExternalUrls.SUPPORT_URL);
 
             return new ValidationProblemDetails(modelStateDictionary)
             {
