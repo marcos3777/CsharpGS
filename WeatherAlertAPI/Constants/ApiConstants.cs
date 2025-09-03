@@ -63,34 +63,5 @@ namespace WeatherAlertAPI.Constants
         public const string DATA_CRIACAO = "DATA_CRIACAO";
     }
 
-    /// <summary>
-    /// Constantes para URLs externas
-    /// </summary>
-    public static class ExternalUrls
-    {
-        /// <summary>
-        /// URL base do site oficial
-        /// </summary>
-        public const string WEATHERALERT_SITE = "https://weatheralert.com";
-        
-        /// <summary>
-        /// URL de suporte
-        /// </summary>
-        public const string SUPPORT_URL = "https://weatheralert.com/support";
-        
-        /// <summary>
-        /// URL dos termos de serviço
-        /// </summary>
-        public const string TERMS_URL = "https://weatheralert.com/terms";
-        
-        /// <summary>
-        /// URL da licença MIT
-        /// </summary>
-        public const string MIT_LICENSE_URL = "https://opensource.org/licenses/MIT";
-        
-        /// <summary>
-        /// Email de suporte
-        /// </summary>
-        public const string SUPPORT_EMAIL = "suporte@weatheralert.com";
-    }
+
 }

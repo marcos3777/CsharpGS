@@ -15,6 +15,7 @@ namespace WeatherAlertAPI.Tests
         private readonly Mock<IPreferenciasService> _mockPreferenciasService;
         private readonly Mock<IAlertaService> _mockAlertaService;
         private readonly Mock<IWeatherService> _mockWeatherService;
+        private readonly Mock<IUrlService> _mockUrlService;
         private readonly PreferenciasController _preferenciasController;
         private readonly AlertaController _alertaController;
         private readonly WeatherCheckController _weatherCheckController;
@@ -24,8 +25,13 @@ namespace WeatherAlertAPI.Tests
             _mockPreferenciasService = new Mock<IPreferenciasService>();
             _mockAlertaService = new Mock<IAlertaService>();
             _mockWeatherService = new Mock<IWeatherService>();
-            _preferenciasController = new PreferenciasController(_mockPreferenciasService.Object);
-            _alertaController = new AlertaController(_mockAlertaService.Object);
+            _mockUrlService = new Mock<IUrlService>();
+            
+            // Setup mock URL service
+            _mockUrlService.Setup(x => x.GetSupportUrl()).Returns("https://test-support.com");
+            
+            _preferenciasController = new PreferenciasController(_mockPreferenciasService.Object, _mockUrlService.Object);
+            _alertaController = new AlertaController(_mockAlertaService.Object, _mockUrlService.Object);
             _weatherCheckController = new WeatherCheckController(_mockWeatherService.Object);
         }
 

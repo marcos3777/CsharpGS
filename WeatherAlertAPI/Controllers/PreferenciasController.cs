@@ -27,10 +27,12 @@ namespace WeatherAlertAPI.Controllers
     public class PreferenciasController : ControllerBase
     {
         private readonly IPreferenciasService _preferenciasService;
+        private readonly IUrlService _urlService;
 
-        public PreferenciasController(IPreferenciasService preferenciasService)
+        public PreferenciasController(IPreferenciasService preferenciasService, IUrlService urlService)
         {
             _preferenciasService = preferenciasService;
+            _urlService = urlService;
         }        /// <summary>
         /// Lista todas as preferências de notificação
         /// </summary>
@@ -181,7 +183,7 @@ namespace WeatherAlertAPI.Controllers
             {
                 var error = new ErrorResponse("CREATION_ERROR", ex.Message);
                 error.AddLink("documentation", "/docs/errors/CREATION_ERROR");
-                error.AddLink("support", ExternalUrls.SUPPORT_URL);
+                error.AddLink("support", _urlService.GetSupportUrl());
                 return BadRequest(error);
             }
         }

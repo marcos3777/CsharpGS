@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using WeatherAlertAPI.Models;
-using WeatherAlertAPI.Constants;
+using WeatherAlertAPI.Services;
 
 namespace WeatherAlertAPI.Middleware
 {
@@ -36,7 +36,8 @@ namespace WeatherAlertAPI.Middleware
             );
 
             error.AddLink("documentation", "/docs/errors/INTERNAL_SERVER_ERROR");
-            error.AddLink("support", ExternalUrls.SUPPORT_URL);
+            var urlService = context.RequestServices.GetRequiredService<IUrlService>();
+            error.AddLink("support", urlService.GetSupportUrl());
 
             var result = JsonSerializer.Serialize(error);
             context.Response.ContentType = "application/json";

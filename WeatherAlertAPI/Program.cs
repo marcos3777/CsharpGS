@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using WeatherAlertAPI.Data;
-using WeatherAlertAPI.Constants;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +41,8 @@ builder.Services.AddControllers(options =>
 
         var error = new ErrorResponse("VALIDATION_ERROR", string.Join("; ", errors));
         error.AddLink("documentation", "/docs/errors/VALIDATION_ERROR");
-        error.AddLink("support", ExternalUrls.SUPPORT_URL);
+        var urlServiceProvider = context.HttpContext.RequestServices.GetRequiredService<IUrlService>();
+        error.AddLink("support", urlServiceProvider.GetSupportUrl());
 
         var result = new BadRequestObjectResult(error);
         result.ContentTypes.Add("application/json");
@@ -97,15 +98,15 @@ builder.Services.AddSwaggerGen(options =>
         Contact = new OpenApiContact
         {
             Name = "Weather Alert Team",
-            Email = ExternalUrls.SUPPORT_EMAIL,
-            Url = new Uri(ExternalUrls.SUPPORT_URL)
+            Email = externalUrls.SupportEmail,
+            Url = new Uri(externalUrls.SupportUrl)
         },
         License = new OpenApiLicense
         {
             Name = "MIT License",
-            Url = new Uri(ExternalUrls.MIT_LICENSE_URL)
+            Url = new Uri(externalUrls.MitLicenseUrl)
         },
-        TermsOfService = new Uri(ExternalUrls.TERMS_URL)
+        TermsOfService = new Uri(externalUrls.TermsUrl)
     });
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -157,12 +158,15 @@ builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("Database"));
 builder.Services.Configure<WeatherApiSettings>(
     builder.Configuration.GetSection("WeatherApi"));
+builder.Services.Configure<ExternalUrlsSettings>(
+    builder.Configuration.GetSection("ExternalUrls"));
 
 builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
 builder.Services.AddScoped<IAlertaService, AlertaService>();
 builder.Services.AddScoped<IPreferenciasService, PreferenciasService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IProceduresService, ProceduresService>();
+builder.Services.AddScoped<IUrlService, UrlService>();
 builder.Services.AddHttpClient();
 
 // Adicionar o contexto do banco de dados
@@ -186,6 +190,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Get configured URLs for use in setup
+var externalUrls = app.Services.GetRequiredService<IOptions<ExternalUrlsSettings>>().Value;
 
 if (app.Environment.IsDevelopment())
 {

@@ -4,12 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WeatherAlertAPI.Models;
-using WeatherAlertAPI.Constants;
 
 namespace WeatherAlertAPI.Services
 {
     public class HypermediaProblemDetailsFactory : ProblemDetailsFactory
     {
+        private readonly IUrlService _urlService;
+
+        public HypermediaProblemDetailsFactory(IUrlService urlService)
+        {
+            _urlService = urlService;
+        }
+
         public override ProblemDetails CreateProblemDetails(
             HttpContext httpContext,
             int? statusCode = null,
@@ -24,7 +30,7 @@ namespace WeatherAlertAPI.Services
             );
 
             errorResponse.AddLink("documentation", $"/docs/errors/{errorResponse.Error.Code}");
-            errorResponse.AddLink("support", ExternalUrls.SUPPORT_URL);
+            errorResponse.AddLink("support", _urlService.GetSupportUrl());
 
             if (statusCode == StatusCodes.Status404NotFound)
             {
@@ -64,7 +70,7 @@ namespace WeatherAlertAPI.Services
             );
 
             errorResponse.AddLink("documentation", "/docs/errors/VALIDATION_ERROR");
-            errorResponse.AddLink("support", ExternalUrls.SUPPORT_URL);
+            errorResponse.AddLink("support", _urlService.GetSupportUrl());
 
             return new ValidationProblemDetails(modelStateDictionary)
             {

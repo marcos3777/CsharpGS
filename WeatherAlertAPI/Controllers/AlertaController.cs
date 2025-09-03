@@ -34,10 +34,12 @@ namespace WeatherAlertAPI.Controllers
     public class AlertaController : ControllerBase
     {
         private readonly IAlertaService _alertaService;
+        private readonly IUrlService _urlService;
 
-        public AlertaController(IAlertaService alertaService)
+        public AlertaController(IAlertaService alertaService, IUrlService urlService)
         {
             _alertaService = alertaService;
+            _urlService = urlService;
         }        /// <summary>
         /// Lista todos os alertas de temperatura
         /// </summary>
@@ -211,7 +213,7 @@ namespace WeatherAlertAPI.Controllers
             {
                 var error = new ErrorResponse("CREATE_ERROR", ex.Message);
                 error.AddLink("documentation", "/docs/errors/CREATE_ERROR");
-                error.AddLink("support", ExternalUrls.SUPPORT_URL);
+                error.AddLink("support", _urlService.GetSupportUrl());
                 return BadRequest(error);
             }
         }
