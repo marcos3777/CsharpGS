@@ -19,20 +19,20 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label asp-for="Filtro.Cidade" class="control-label"></label>
-                                    <input asp-for="Filtro.Cidade" class="form-control" />
+                                    <label for="filtro-cidade" class="control-label">Cidade</label>
+                                    <input asp-for="Filtro.Cidade" id="filtro-cidade" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label asp-for="Filtro.Estado" class="control-label"></label>
-                                    <input asp-for="Filtro.Estado" class="form-control" />
+                                    <label for="filtro-estado" class="control-label">Estado</label>
+                                    <input asp-for="Filtro.Estado" id="filtro-estado" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label asp-for="Filtro.Ativo" class="control-label"></label>
-                                    <select asp-for="Filtro.Ativo" class="form-control">
+                                    <label for="filtro-ativo" class="control-label">Ativo</label>
+                                    <select asp-for="Filtro.Ativo" id="filtro-ativo" class="form-control">
                                         <option value="">Todos</option>
                                         <option value="S">Ativo</option>
                                         <option value="N">Inativo</option>
