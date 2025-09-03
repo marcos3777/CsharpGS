@@ -21,7 +21,7 @@ namespace WeatherAlertAPI.Models
         /// <summary>
         /// Identificador único da preferência de notificação
         /// </summary>
-        public int IdPreferencia { get; set; }
+        public int? IdPreferencia { get; set; }
 
         /// <summary>
         /// Cidade para monitoramento de alertas
@@ -50,12 +50,12 @@ namespace WeatherAlertAPI.Models
         /// <summary>
         /// Indicates whether this notification preference is active
         /// </summary>
-        public bool Ativo { get; set; }
+        public bool? Ativo { get; set; }
 
         /// <summary>
         /// The date and time when this preference was created
         /// </summary>
-        public DateTime DataCriacao { get; set; }
+        public DateTime? DataCriacao { get; set; }
 
         /// <summary>
         /// The date and time when this preference was last updated

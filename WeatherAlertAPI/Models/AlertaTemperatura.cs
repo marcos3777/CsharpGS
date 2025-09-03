@@ -42,7 +42,7 @@ namespace WeatherAlertAPI.Models
         /// <summary>
         /// The unique identifier for the alert
         /// </summary>
-        public int IdAlerta { get; set; }
+        public int? IdAlerta { get; set; }
 
         /// <summary>
         /// The city where the temperature was measured
@@ -60,7 +60,7 @@ namespace WeatherAlertAPI.Models
         /// The measured temperature in Celsius
         /// </summary>
         /// <example>32.5</example>
-        public decimal Temperatura { get; set; }
+        public decimal? Temperatura { get; set; }
 
         /// <summary>
         /// The type of temperature alert (TEMPERATURA_ALTA or TEMPERATURA_BAIXA)
@@ -77,7 +77,7 @@ namespace WeatherAlertAPI.Models
         /// <summary>
         /// The date and time when the alert was generated
         /// </summary>
-        public DateTime DataHora { get; set; }
+        public DateTime? DataHora { get; set; }
 
         /// <summary>
         /// The current status of the alert (ATIVO or INATIVO)
